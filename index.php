@@ -1,5 +1,10 @@
 <?php
+
 include 'twitter.methods.php';
+
+$result = callTwitterPlease();
+$de_json = json_decode($result, true);
+var_dump($de_json);
 ?>
 <!DOCTYPE html>
 <html>
@@ -53,19 +58,23 @@ include 'twitter.methods.php';
             </p>
             <div>
                 <ul id='tweet_feed'>
-                <?php
-                    $result = callTwitterPlease();
-                    $de_json = json_decode($result, true)
-                ?>
-                    <?php foreach($de_json['results'] as $tweet): ?>
-                        <li id="<?php echo $tweet['id']; ?>">
-                            <div class='tweet'>
-                                <span id="image"><img src="<?php echo $tweet['profile_image_url']; ?>" width="50px" height="50px" /></span>
-                                <span id="user_name"><a href="http://www.twitter.com/<?php echo $tweet['from_user']; ?>"><?php echo $tweet['from_user']; ?></a>: </span>
-                                <p class="tweet_text"><?php echo $tweet['text']; ?></p>
-                            </div>
+                    <?php if(empty($de_json['errors'])): ?>
+                        <?php foreach($de_json['results'] as $tweet): ?>
+                            <li id="<?php echo $tweet['id']; ?>">
+                                <div class='tweet'>
+                                    <span id="image"><img src="<?php echo $tweet['profile_image_url']; ?>" width="50px" height="50px" /></span>
+                                    <span id="user_name"><a href="http://www.twitter.com/<?php echo $tweet['from_user']; ?>"><?php echo $tweet['from_user']; ?></a>: </span>
+                                    <p class="tweet_text"><?php echo $tweet['text']; ?></p>
+                                </div>
+                            </li>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <li>
+                            Error connecting or something... :(
+                            <br />
+                            <div><?php echo $de_json['errors'][0]['message']; ?></div>
                         </li>
-                    <?php endforeach; ?>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
