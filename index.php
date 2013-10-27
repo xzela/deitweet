@@ -20,7 +20,7 @@ $de_json = json_decode($result, true);
 
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <script type='text/javascript'>
-    var seconds = 6000;
+    var seconds = 10000;
     var token = 0;
     $('document').ready(function () {
         //getTweetsPlease(true);
