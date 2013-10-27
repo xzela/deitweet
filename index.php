@@ -4,7 +4,7 @@ include 'twitter.methods.php';
 
 $result = callTwitterPlease();
 $de_json = json_decode($result, true);
-var_dump($de_json);
+//var_dump($de_json['statuses']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,16 +20,19 @@ var_dump($de_json);
 
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <script type='text/javascript'>
-    var a = new Array();
+    var a = [];
     var seconds = 6000; //milliseconds
     var regexp = /((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/gi;
     var token = 0;
     $('document').ready(function () {
         //getTweetsPlease(true);
-        $.timer(seconds, function(timer) {
-            getTweetsPlease(true);
-            token++;
-        });
+        setInterval(function() {
+            getTweetsPlease();
+        },6000);
+        // $.timer(seconds, function(timer) {
+        //     getTweetsPlease(true);
+        //     token++;
+        // });
     });
     </script>
 </head>
@@ -39,13 +42,9 @@ var_dump($de_json);
             <h1>Which Deity Is the Most Tweetable?</h1>
         </div>
         <div id="rightnav">
-            <h2>Bored?</h2>
+            <h2>Not doing much?</h2>
             <h4>Try these fun games!</h4>
             <ul>
-                <li>
-                    <strong>DnD (Deity-N-Drink)</strong>
-                    Pick your favorite deity. When that deity is not mentioned, take a drink.
-                </li>
                 <li>
                     <strong>DnD (Deity-N-Drink)</strong>
                     Pick your favorite deity. When that deity is not mentioned, take a drink.
@@ -59,11 +58,11 @@ var_dump($de_json);
             <div>
                 <ul id='tweet_feed'>
                     <?php if(empty($de_json['errors'])): ?>
-                        <?php foreach($de_json['results'] as $tweet): ?>
-                            <li id="<?php echo $tweet['id']; ?>">
+                        <?php foreach($de_json['statuses'] as $tweet): ?>
+                            <li id="<?php echo $tweet['user']['id']; ?>">
                                 <div class='tweet'>
-                                    <span id="image"><img src="<?php echo $tweet['profile_image_url']; ?>" width="50px" height="50px" /></span>
-                                    <span id="user_name"><a href="http://www.twitter.com/<?php echo $tweet['from_user']; ?>"><?php echo $tweet['from_user']; ?></a>: </span>
+                                    <span id="image"><img src="<?php echo $tweet['user']['profile_image_url']; ?>" width="50px" height="50px" /></span>
+                                    <span id="user_name"><a href="http://www.twitter.com/<?php echo $tweet['user']['screen_name']; ?>"><?php echo $tweet['user']['screen_name']; ?></a>: </span>
                                     <p class="tweet_text"><?php echo $tweet['text']; ?></p>
                                 </div>
                             </li>

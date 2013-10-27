@@ -1,25 +1,28 @@
+
+
 function getTweetsPlease(str) {
 	$.post('twitter.api.call.php', {j:str},
 		function(data) {
-			tweet = data.results;
+			tweet = data.statuses;
 			list = $('#tweet_feed');
 			if(tweet !== null) {
+				console.log(tweet)
 				for(i = 0; i < tweet.length; i++) {
-					if(a.length > 0) { //test to see if array is larger than 0;
-						if(a[tweet[i].id] != tweet[i].from_user) { //if tweet not already in list, add 'em!
-							html = formatTweetPlease(tweet[i]);
-							list.prepend(html);
-							$('#' + tweet[i].id).attr('style', 'display:none').slideDown('slow');
-							a[tweet[i].id] = tweet[i].from_user;
-						}
-					}
-					else { //list is empty, add the tweets
+					// if(a.length > 0) { //test to see if array is larger than 0;
+					// 	if(a[tweet[i].id] != tweet[i].from_user) { //if tweet not already in list, add 'em!
+					// 		html = formatTweetPlease(tweet[i]);
+					// 		list.prepend(html);
+					// 		$('#' + tweet[i].id).attr('style', 'display:none').slideDown('slow');
+					// 		a[tweet[i].id] = tweet[i].from_user;
+					// 	}
+					// }
+					// else { //list is empty, add the tweets
 						html = formatTweetPlease(tweet[i]);
 						list.prepend(html);
 						$('#' + tweet[i].id).attr('style', 'display:none').slideDown('slow');
 						a[tweet[i].id] = tweet[i].from_user;
 
-					}
+					// }
 				}
 				if(list.children().size() > 10) { //remove tweets when list is larger than 10 entries
 					$("#tweet_feed li:last-child").slideUp("normal").remove();
@@ -33,8 +36,8 @@ function getTweetsPlease(str) {
 
 function formatTweetPlease(tweet) {
 	var html = '<li id="' + tweet.id + '">';
-	var image = '<span id="image"><img src="' + tweet.profile_image_url + '" width="50px" height="50px" /></span>';
-	var user = '<span id="user_name"><a href="http://www.twitter.com/' + tweet.from_user + '">' + tweet.from_user + '</a>: </span>';
+	var image = '<span id="image"><img src="' + tweet.user.profile_image_url + '" width="50px" height="50px" /></span>';
+	var user = '<span id="user_name"><a href="http://www.twitter.com/' + tweet.user.screen_name + '">' + tweet.user.screen_name + '</a>: </span>';
 	var text = '<p class="tweet_text">' + tweet.text + ' </p>';
 		html += '<div class="tweet">';
 			html += image + '' + user;
