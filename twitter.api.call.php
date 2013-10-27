@@ -2,14 +2,14 @@
 	include_once('twitter.methods.php') ;
 
 	//send out one at a time
-	$result = callTwitterPlease();
-
-	if(isset($_POST['j']) && $_POST['j'] == 'true')
+	if(isset($_POST['j']))
 	{
+		$token = $_POST['j'];
+		$result = callTwitterPlease($token);
 		$de_json = json_decode($result, true); //unjsonize this
 		if (empty($de_json['errors']))
 		{
-			print '{"results":[' . json_encode($de_json['results'][0])  . ']}';
+			print json_encode($de_json);
 		}
 		else
 		{
@@ -18,7 +18,7 @@
 	}
 	else
 	{
-		print $result;
+		print array();
 	}
 
 ?>

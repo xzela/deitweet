@@ -20,19 +20,14 @@ $de_json = json_decode($result, true);
 
     <link rel="stylesheet" type="text/css" href="styles.css" />
     <script type='text/javascript'>
-    var a = [];
-    var seconds = 6000; //milliseconds
-    var regexp = /((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/gi;
+    var seconds = 6000;
     var token = 0;
     $('document').ready(function () {
         //getTweetsPlease(true);
         setInterval(function() {
-            getTweetsPlease();
-        },6000);
-        // $.timer(seconds, function(timer) {
-        //     getTweetsPlease(true);
-        //     token++;
-        // });
+            getTweetsPlease(token);
+            token++;
+        },seconds);
     });
     </script>
 </head>

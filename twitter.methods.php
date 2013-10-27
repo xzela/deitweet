@@ -9,8 +9,10 @@ define('CONSUMER_KEY', $consumer_key);
 define('CONSUMER_SECRET', $consumer_secret);
 define('ACCESS_TOKEN', $access_token);
 define('ACCESS_TOKEN_SECRET', $access_token_secret);
-//define('PARAMS', "?q=jesus+OR+xenu+OR+god+OR+allah+OR+mohammed+OR+satan+OR+vishnu");
-define('PARAMS', "q=jesus");
+// %20 FTW!
+define('SEARCH', "q=jesus%20OR%20xenu%20OR%20god%20OR%20allah%20OR%20mohammed%20OR%20satan%20OR%20vishnu");
+define('COUNT', "count=10");
+define('PARAMS', COUNT . '&' . SEARCH);
 define('RAW_URL', "https://api.twitter.com/1.1/search/tweets.json");
 define('PARAMS_URL', RAW_URL . '?' . PARAMS);
 
@@ -41,12 +43,12 @@ function constructKey()
 function constructBaseUrl($hash)
 {
 	$base = '';
-	$base .= 'GET';
-	$base .= '&';
+	$base .= 'GET&';
 	$base .= rawurlencode(RAW_URL);
 	$base .= '&';
+	$base .= rawurlencode(COUNT .'&');
 	$base .= rawurlencode($hash);
-	$base .= rawurlencode('&' . PARAMS);
+	$base .= rawurlencode('&' . SEARCH);
 
 	return $base;
 }
@@ -78,6 +80,8 @@ function callTwitterPlease()
 	$key = constructKey();
 	$signature = constructSignature('sha1', $base, $key);
 	$header = constructOAuthHeader($signature);
+
+	// var_dump($base);
 
 	$curl = curl_init();
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);

@@ -1,29 +1,16 @@
 
+var regexp = /((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/gi;
 
 function getTweetsPlease(str) {
 	$.post('twitter.api.call.php', {j:str},
 		function(data) {
-			tweet = data.statuses;
+			tweets = data.statuses;
 			list = $('#tweet_feed');
-			if(tweet !== null) {
-				console.log(tweet)
-				for(i = 0; i < tweet.length; i++) {
-					// if(a.length > 0) { //test to see if array is larger than 0;
-					// 	if(a[tweet[i].id] != tweet[i].from_user) { //if tweet not already in list, add 'em!
-					// 		html = formatTweetPlease(tweet[i]);
-					// 		list.prepend(html);
-					// 		$('#' + tweet[i].id).attr('style', 'display:none').slideDown('slow');
-					// 		a[tweet[i].id] = tweet[i].from_user;
-					// 	}
-					// }
-					// else { //list is empty, add the tweets
-						html = formatTweetPlease(tweet[i]);
-						list.prepend(html);
-						$('#' + tweet[i].id).attr('style', 'display:none').slideDown('slow');
-						a[tweet[i].id] = tweet[i].from_user;
-
-					// }
-				}
+			if(tweets !== null) {
+				// pull the first tweet, ignore the rest!
+				html = formatTweetPlease(tweets[0]);
+				list.prepend(html);
+				$('#' + tweets[0].id).attr('style', 'display:none').slideDown('slow');
 				if(list.children().size() > 10) { //remove tweets when list is larger than 10 entries
 					$("#tweet_feed li:last-child").slideUp("normal").remove();
 				}
